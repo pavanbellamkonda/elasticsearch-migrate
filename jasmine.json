@@ -1,0 +1,8 @@
+{
+  "spec_files": [
+    "**/*.test.ts"
+  ],
+  "spec_dir": "src",
+  "random": false,
+  "helpers": ["test-helper.ts"]
+}

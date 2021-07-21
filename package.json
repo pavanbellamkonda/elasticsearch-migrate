@@ -4,7 +4,10 @@
   "description": "Tool to run migrations to create/modify Elasticsearch index mapping.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prod-build": "tsc --project tsconfig.production.json",
+    "test": "jasmine-ts --config=jasmine.json",
+    "watch-test": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,16 @@
   "bugs": {
     "url": "https://github.com/pavanbellamkonda/es-migration/issues"
   },
-  "homepage": "https://github.com/pavanbellamkonda/es-migration#readme"
+  "homepage": "https://github.com/pavanbellamkonda/es-migration#readme",
+  "devDependencies": {
+    "@types/jasmine": "^3.8.1",
+    "@types/node": "^14.17.5",
+    "jasmine": "^3.8.0",
+    "jasmine-reporters": "^2.4.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "jasmine-ts": "^0.4.0",
+    "nodemon": "^2.0.12",
+    "source-map-support": "^0.5.19",
+    "typescript": "^4.3.5"
+  }
 }
