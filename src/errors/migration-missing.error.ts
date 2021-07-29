@@ -1,5 +1,5 @@
 export class MigrationFileMissingError extends Error {
   constructor(fileName: string) {
-    super(fileName + ' is missing in the directory.');
+    super(`MigrationFileMissingError: ${fileName} is missing in the directory.`);
   }
 }
