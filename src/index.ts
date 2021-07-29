@@ -1,3 +1,2 @@
-export function test() {
-  return 10;
-}
+export * from './migrate';
+export * from './migration-config.model';

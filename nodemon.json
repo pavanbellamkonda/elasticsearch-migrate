@@ -1,5 +1,6 @@
 {
   "watch": [
+    "tests",
     "src"
   ],
   "ext": "ts",

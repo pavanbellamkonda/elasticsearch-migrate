@@ -8,7 +8,7 @@ services:
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
-      - discovery.seed_hosts=localhost:9200
+      - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -16,18 +16,18 @@ services:
         hard: -1
     ports:
       - 9200:9200
-    expose: 
+    expose:
       - 9200
   kibana:
     image: docker.elastic.co/kibana/kibana:7.13.4
     container_name: kibana
     network_mode: bridge
     environment:
-      SERVER_NAME: kibana
+      SERVER_NAME: localhost
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     depends_on:
       - elasticsearch
     ports:
       - 5601:5601
-    expose: 
+    expose:
       - 5601
