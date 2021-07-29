@@ -8,4 +8,5 @@ test-results
 # Dependency directories
 node_modules/
 
-dist
+# tsc output folder
+lib
