@@ -1,0 +1,26 @@
+{
+  "reporter": [
+    "cobertura",
+    "html",
+    "lcov",
+    "text",
+    "text-summary"
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.model.ts"
+  ],
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "sourceMap": true,
+  "all": true,
+  "report-dir": "./coverage",
+  "check-coverage": true,
+  "branches": "90",
+  "functions": "90",
+  "statements": "90",
+  "watermarks": {
+    "branches": [90, 100],
+    "functions": [90, 100],
+    "statements": [90, 100]
+  }
+}
