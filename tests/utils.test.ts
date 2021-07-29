@@ -1,32 +1,33 @@
-import { migrate } from '../src/migrate';
-import * as fetchExistingMigrations from '../src/fetch-existing-migrations';
+import { createIndexIfNotAvailable } from '../src/utils';
+import { migrationIndexMapping } from '../src/migration-index-mappings';
 import { client } from './client';
 
-describe('migrate()', () => {
+describe('createIndexIfNotAvailable()', () => {
   it('should create migration index if it does not already exist', async () => {
     spyOn(client.indices, 'exists').and.resolveTo({
       body: false
     });
     const indexCreateSpy = spyOn(client.indices, 'create').and.stub();
-    await migrate({
+    const { created } = await createIndexIfNotAvailable({
       indexName: 'migrations',
       client,
-      directory: ''
+      schema: migrationIndexMapping
     });
     expect(indexCreateSpy).toHaveBeenCalled();
+    expect(created).toBeTrue();
   });
 
   it('should not create migration index if it already exists', async () => {
     spyOn(client.indices, 'exists').and.resolveTo({
       body: true
     });
-    spyOn(fetchExistingMigrations, 'fetchExistingMigrations').and.resolveTo([]);
     const indexCreateSpy = spyOn(client.indices, 'create').and.stub();
-    await migrate({
+    const { created } = await createIndexIfNotAvailable({
       indexName: 'migrations',
       client,
-      directory: ''
+      schema: migrationIndexMapping
     });
     expect(indexCreateSpy).not.toHaveBeenCalled();
+    expect(created).toBeFalse();
   });
 });

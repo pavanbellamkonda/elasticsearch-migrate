@@ -1,2 +1,2 @@
-export * from './migrate';
-export * from './migration-config.model';
+export * from './run-migrations';
+export * from './models/migration-config.model';

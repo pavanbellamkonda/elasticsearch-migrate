@@ -1,10 +1,6 @@
+import type { MigrationSource } from './models';
 import path from 'path';
 import fs from 'fs';
-import type { Client } from '@elastic/elasticsearch';
-
-type MigrationSource = {
-  migrate: (client: Client) => Promise<void>
-}
 
 export async function fetchSourceMigrations(directory: string): Promise<MigrationSource[]> {
   const absoluteDir = path.join(process.cwd(), directory)
@@ -17,10 +13,19 @@ export async function fetchSourceMigrations(directory: string): Promise<Migratio
       resolve(files);
     });
   });
-  const filePaths = fileNames.map(fileName => {
+  fileNames.sort();
+  const files = fileNames.map((fileName, index) => {
     const splitFileName = fileName.split('.');
     splitFileName.pop();
-    return path.join(absoluteDir, splitFileName.join('.'));
+    return {
+      id: index,
+      fileName,
+      path: path.join(absoluteDir, splitFileName.join('.'))
+    };
   });
-  return filePaths.map(filePath => require(filePath));
+  return files.map(file => ({
+    ...file,
+    ...require(file.path),
+    skip: false
+  }));
 }

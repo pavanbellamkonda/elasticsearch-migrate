@@ -1,6 +1,6 @@
 import type { Client } from '@elastic/elasticsearch';
 import type { SearchResponse } from '@elastic/elasticsearch/api/types';
-import type { MigrationRecord } from './migration-record.model';
+import type { MigrationRecord } from './models';
 
 type FetchMigrationsInput = { indexName: string, client: Client };
 
