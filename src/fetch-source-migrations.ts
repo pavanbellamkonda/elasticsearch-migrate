@@ -1,6 +1,7 @@
 import type { MigrationSource } from './models';
 import path from 'path';
 import fs from 'fs';
+import { MigrateFunctionImportFailedError } from './errors';
 
 export async function fetchSourceMigrations(directory: string): Promise<MigrationSource[]> {
   const absoluteDir = path.join(process.cwd(), directory)
@@ -25,7 +26,22 @@ export async function fetchSourceMigrations(directory: string): Promise<Migratio
   });
   return files.map(file => ({
     ...file,
-    ...require(file.path),
+    migrate: getMigrateFunction(file.path),
     skip: false
   }));
+}
+
+export function getMigrateFunction(absoluteFilePath: string) {
+  const fileImport = require(absoluteFilePath);
+  if (typeof fileImport === 'object') {
+    if ('migrate' in fileImport && typeof fileImport['migrate'] === 'function') {
+      return fileImport['migrate'];
+    }
+    if ('default' in fileImport && typeof fileImport['default'] === 'function') {
+      return fileImport['default'];    
+    }
+  } else if (typeof fileImport === 'function') {
+    return fileImport;
+  }
+  throw new MigrateFunctionImportFailedError(absoluteFilePath);
 }
