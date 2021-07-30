@@ -2,7 +2,7 @@ import type { MigrationRecord, MigrationConfig } from './models';
 
 import { fetchExistingMigrations } from './fetch-existing-migrations';
 import { createIndexIfNotAvailable } from './utils';
-import { migrationIndexMapping, migrationLockIndexMapping } from './migration-index-mappings';
+import { migrationIndexMapping, migrationLockIndexMapping } from './migration-index-mappings.constants';
 import { fetchSourceMigrations } from './fetch-source-migrations';
 import { getPendingMigrations } from './get-pending-migrations';
 import { runSourceMigrations } from './run-source-migrations';
