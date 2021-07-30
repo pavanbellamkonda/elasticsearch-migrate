@@ -1,5 +1,5 @@
 {
-  "name": "es-migration",
+  "name": "elasticsearch-migrate",
   "version": "0.0.0",
   "description": "Tool to run migrations to create/modify Elasticsearch index mapping.",
   "main": "index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pavanbellamkonda/es-migration.git"
+    "url": "git+https://github.com/pavanbellamkonda/elasticsearch-migrate.git"
   },
   "keywords": [
     "elasticsearch",
@@ -21,9 +21,9 @@
   "author": "Pavan Bellamkonda",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pavanbellamkonda/es-migration/issues"
+    "url": "https://github.com/pavanbellamkonda/elasticsearch-migrate/issues"
   },
-  "homepage": "https://github.com/pavanbellamkonda/es-migration#readme",
+  "homepage": "https://github.com/pavanbellamkonda/elasticsearch-migrate#readme",
   "devDependencies": {
     "@elastic/elasticsearch": "^7.13.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
