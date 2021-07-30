@@ -1,5 +1,5 @@
 import { createIndexIfNotAvailable } from '../src/utils';
-import { migrationIndexMapping } from '../src/migration-index-mappings';
+import { migrationIndexMapping } from '../src/migration-index-mappings.constants';
 import { client } from './client';
 
 describe('createIndexIfNotAvailable()', () => {

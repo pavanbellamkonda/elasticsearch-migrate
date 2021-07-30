@@ -15,10 +15,12 @@ export interface MigrationConfig {
    * Elasticsearch Node.js client instance
    */
   client: Client;
+  /**
+   * Timeout to wait until the migration
+   * lock is released.
+   * Default: 60000
+   */
+  migrationLockTimeout?: number;
 }
 
-export declare function runMigrations({
-  indexName,
-  directory,
-  client,
-}: MigrationConfig): Promise<void>;
+export declare function runMigrations(config: MigrationConfig): Promise<void>;
