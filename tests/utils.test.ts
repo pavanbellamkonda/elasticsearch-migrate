@@ -1,4 +1,4 @@
-import { createIndexIfNotAvailable } from '../src/utils';
+import { createIndexIfNotAvailable, getRecordById } from '../src/utils';
 import { migrationIndexMapping } from '../src/migration-index-mappings.constants';
 import { client } from './client';
 
@@ -29,5 +29,39 @@ describe('createIndexIfNotAvailable()', () => {
     });
     expect(indexCreateSpy).not.toHaveBeenCalled();
     expect(created).toBeFalse();
+  });
+});
+
+describe('getRecordById()', () => {
+  it('should get record in the index for document Id if it exists', async () => {
+    spyOn(client, 'get').and.resolveTo({
+      body: {
+        _id: 'lock',
+        _source: {
+          isLocked: true
+        }, 
+        found: true
+      }
+    });
+    const record = await getRecordById({
+      client,
+      indexName: 'migrations_lock',
+      id: 'lock'
+    });
+    expect(record).toEqual({
+      isLocked: true
+    });
+  });
+
+  it('should return undefined if record with document Id does not exist in the index', async () => {
+    spyOn(client, 'get').and.rejectWith({
+      name: 'ResponseError'
+    });
+    const record = await getRecordById({
+      client,
+      indexName: 'migrations_lock',
+      id: 'lock1'
+    });
+    expect(record).toEqual(undefined);
   });
 });

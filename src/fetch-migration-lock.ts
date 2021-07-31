@@ -1,13 +1,14 @@
 import { FetchRecordsInput } from './models';
-import { getAllRecordsInIndex } from './utils';
+import { getRecordById } from './utils';
 
 export async function fetchMigrationLock({ indexName, client }: FetchRecordsInput) {
-  const migrationLockRecords = await getAllRecordsInIndex<{isLocked: boolean}>({ 
+  const migrationLockRecord = await getRecordById<{isLocked: boolean}>({ 
     client,
-    indexName
+    indexName,
+    id: 'lock'
   });
-  if (migrationLockRecords.length === 1) {
-    return migrationLockRecords[0].isLocked;
+  if (migrationLockRecord) {
+    return migrationLockRecord.isLocked;
   }
   return false;
 }

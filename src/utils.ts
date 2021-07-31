@@ -1,5 +1,5 @@
-import type { Client } from '@elastic/elasticsearch';
-import type { SearchResponse } from '@elastic/elasticsearch/api/types';
+import type { ApiResponse, Client } from '@elastic/elasticsearch';
+import type { SearchResponse, GetResponse } from '@elastic/elasticsearch/api/types';
 
 export async function createIndexIfNotAvailable({
   client,
@@ -40,6 +40,29 @@ export async function getAllRecordsInIndex<RecordType = any>({
     size: count
   });
   return migrationRecords.map(({ _source }) => _source) as RecordType[];
+}
+
+export async function getRecordById<RecordType = any>({
+  client,
+  indexName,
+  id
+}: {
+  indexName: string;
+  client: Client;
+  id: string;
+}): Promise<RecordType | undefined> {
+  let response: ApiResponse<GetResponse<RecordType>, unknown>;
+  try {
+    response = await client.get<GetResponse<RecordType>>({
+      index: indexName,
+      id
+    });
+  } catch (err) {
+    return;
+  }
+  if (response.body.found) {
+    return response.body._source;
+  }
 }
 
 export function isFunction(val: unknown): boolean {
