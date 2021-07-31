@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "coverage": "nyc --reporter coveradge npm run test",
+    "coverage": "nyc npm run test",
+    "coveradge": "nyc --reporter coveradge npm run test",
     "prod-build": "rm -rf lib && tsc --project tsconfig.production.json",
     "test": "jasmine-ts --config=jasmine.json",
     "watch-test": "nodemon"
