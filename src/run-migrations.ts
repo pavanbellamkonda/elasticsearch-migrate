@@ -1,29 +1,23 @@
 import type { MigrationRecord } from './models';
 import type { MigrationConfig } from '../index';
 
-import { createIndexIfNotAvailable, getAllRecordsInIndex } from './utils';
-import { migrationIndexMapping, migrationLockIndexMapping } from './migration-index-mappings.constants';
+import { getAllRecordsInIndex } from './utils';
 import { fetchSourceMigrations } from './fetch-source-migrations';
 import { getPendingMigrations } from './get-pending-migrations';
 import { runSourceMigrations } from './run-source-migrations';
-import { fetchMigrationLock } from './fetch-migration-lock';
+import { init } from './init';
 
 export async function runMigrations({ 
   indexName,
   directory,
   client,
-  migrationLockTimeout = 60000 
+  migrationLockTimeout = 60000
 }: MigrationConfig): Promise<void> {
-  const lockIndexName = indexName + '_lock';
-  const { created: migrationIndexCreated } = await createIndexIfNotAvailable({ client, indexName, schema: migrationIndexMapping });
-  const { created: migrationLockIndexCreated } = await createIndexIfNotAvailable({ client, indexName: lockIndexName, schema: migrationLockIndexMapping });
-  let isMigrationLocked = false;
-  if (!migrationLockIndexCreated) {
-    isMigrationLocked = await fetchMigrationLock({ client, indexName: lockIndexName });
-  }
-  if (isMigrationLocked) {
-    
-  }
+  const { migrationIndexCreated, migrationLockIndexCreated, lockIndexName } = await init({
+    client,
+    indexName,
+    migrationLockTimeout
+  });
   let existingMigrations: MigrationRecord[] = [];
   if (!migrationIndexCreated) {
     existingMigrations = await getAllRecordsInIndex<MigrationRecord>({

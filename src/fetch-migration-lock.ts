@@ -1,10 +1,10 @@
-import { FetchRecordsInput } from './models';
+import type { Client } from '@elastic/elasticsearch';
 import { getRecordById } from './utils';
 
-export async function fetchMigrationLock({ indexName, client }: FetchRecordsInput) {
+export async function fetchMigrationLock({ lockIndexName, client }: { lockIndexName: string, client: Client}) {
   const migrationLockRecord = await getRecordById<{isLocked: boolean}>({ 
     client,
-    indexName,
+    indexName: lockIndexName,
     id: 'lock'
   });
   if (migrationLockRecord) {
