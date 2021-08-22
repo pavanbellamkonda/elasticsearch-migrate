@@ -23,4 +23,4 @@ export interface MigrationConfig {
   migrationLockTimeout?: number;
 }
 
-export declare function runMigrations(config: MigrationConfig): Promise<void>;
+export declare function migrateLatest(config: MigrationConfig): Promise<void>;

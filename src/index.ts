@@ -1,1 +1,1 @@
-export * from './run-migrations';
+export * from './migrate-latest';

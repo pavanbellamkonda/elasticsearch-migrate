@@ -1,14 +1,14 @@
-// import { runMigrations } from '../src/run-migrations';
+// import { migrateLatest } from '../src/migrate-latest';
 // import * as fetchExistingMigrations from '../src/fetch-existing-migrations';
 // import { client } from './client';
 
-// describe('runMigrations()', () => {
+// describe('migrateLatest()', () => {
 //   it('should migrate', async () => {
 //     // spyOn(client.indices, 'exists').and.resolveTo({
 //     //   body: false
 //     // });
 //     // const indexCreateSpy = spyOn(client.indices, 'create').and.stub();
-//     await runMigrations({
+//     await migrateLatest({
 //       indexName: 'migrations',
 //       client,
 //       directory: '/tests/es-migrations'

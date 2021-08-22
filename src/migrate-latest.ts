@@ -7,7 +7,7 @@ import { getPendingMigrations } from './get-pending-migrations';
 import { runSourceMigrations } from './run-source-migrations';
 import { init } from './init';
 
-export async function runMigrations({ 
+export async function migrateLatest({ 
   indexName,
   directory,
   client,
