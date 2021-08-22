@@ -1,5 +1,11 @@
 import type { Client } from '@elastic/elasticsearch';
 
+interface MigrationRecord {
+  name: string;
+  id: number;
+  time: string;
+}
+
 export interface MigrationConfig {
   /**
    * Name of the index in which the migrations
@@ -21,6 +27,14 @@ export interface MigrationConfig {
    * Default: 60000
    */
   migrationLockTimeout?: number;
+}
+
+export interface MigrationContext extends MigrationConfig {
+  /**
+   * The last migrated record
+   */
+  lastMigrated?: MigrationRecord | null;
+
 }
 
 export declare function migrateLatest(config: MigrationConfig): Promise<void>;
