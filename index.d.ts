@@ -38,3 +38,4 @@ export interface MigrationContext extends MigrationConfig {
 }
 
 export declare function migrateLatest(config: MigrationConfig): Promise<void>;
+export declare function migrateNext(config: MigrationConfig): Promise<boolean>;

@@ -1,6 +1,8 @@
 import type { Client } from '@elastic/elasticsearch';
-import { MigrationRunFailedError } from './errors';
 import type { MigrationSource } from './models';
+
+import { MigrationRunFailedError } from './errors';
+import { updateLock } from './update-lock';
 
 export async function runSourceMigrations({
   migrations,
@@ -11,13 +13,8 @@ export async function runSourceMigrations({
   client: Client;
   indexName: string;
 }) {
-  await client.index({
-    index: indexName + '_lock',
-    id: 'lock',
-    body: {
-      isLocked: true
-    }
-  });
+  const lockIndexName = indexName + '_lock';
+  await updateLock({ client, lockIndexName, isLocked: true });
   for (const migration of migrations) {
     try {
       await migration.migrate(client);
@@ -26,19 +23,13 @@ export async function runSourceMigrations({
     }
     await client.index({
       index: indexName,
-      id: String(migration.id),
+      id: String(migration.id + 1),
       body: {
         name: migration.fileName,
-        id: migration.id,
+        id: migration.id + 1,
         time: new Date().toISOString()
       }
     });
   }
-  await client.index({
-    index: indexName + '_lock',
-    id: 'lock',
-    body: {
-      isLocked: false
-    }
-  });
+  await updateLock({ client, lockIndexName, isLocked: false });
 }

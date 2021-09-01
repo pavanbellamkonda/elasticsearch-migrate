@@ -11,9 +11,8 @@ export async function migrateNext({
   indexName,
   directory,
   client,
-  migrationLockTimeout = 60000,
-  lastMigrated = null
-}: MigrationContext): Promise<void> {
+  migrationLockTimeout = 60000
+}: MigrationContext): Promise<boolean> {
   const { migrationIndexCreated, migrationLockIndexCreated, lockIndexName } = await init({
     client,
     indexName,
@@ -28,5 +27,9 @@ export async function migrateNext({
   }
   const sourceMigrations = await fetchSourceMigrations(directory);
   const migrations = getPendingMigrations(sourceMigrations, existingMigrations);
-  await runSourceMigrations({ migrations, client, indexName });
+  if (migrations.length > 0) {
+    await runSourceMigrations({ migrations: [migrations[0]], client, indexName });
+    return true;
+  }
+  return false;
 }

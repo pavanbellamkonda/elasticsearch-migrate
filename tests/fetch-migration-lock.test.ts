@@ -9,7 +9,7 @@ describe('fetchMigrationLock()', () => {
     });
     const lockStatus = await fetchMigrationLock({
       client,
-      indexName: 'migrations_lock'
+      lockIndexName: 'migrations_lock'
     });
     expect(lockStatus).toBeTrue();
   });
@@ -18,7 +18,7 @@ describe('fetchMigrationLock()', () => {
     spyOn(utils, 'getRecordById').and.resolveTo(undefined);
     const lockStatus = await fetchMigrationLock({
       client,
-      indexName: 'migrations_lock'
+      lockIndexName: 'migrations_lock'
     });
     expect(lockStatus).toBeFalse();
   });
