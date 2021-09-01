@@ -4,7 +4,7 @@ import fs from 'fs';
 import { importMigrateFunction } from './import-migrate-function';
 
 export async function fetchSourceMigrations(directory: string): Promise<MigrationSource[]> {
-  const absoluteDir = path.join(process.cwd(), directory);
+  const absoluteDir = path.resolve(process.cwd(), directory);
   const fileNames = await new Promise<string[]>((resolve, reject) => {
     fs.readdir(absoluteDir, (err, files) => {
       if (err) {

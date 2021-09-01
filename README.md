@@ -1,7 +1,34 @@
 # elasticsearch-migrate
-Tool to run migrations to create/modify Elasticsearch index mapping.
+Tool to run migrations in Elasticsearch.
 
 ## Usage
+
+About MigrationConfig
+
+```ts
+interface MigrationConfig {
+  /**
+   * Name of the index in which the migrations
+   * have to be stored/read.
+   */
+  indexName: string;
+  /**
+   * Relative path to the directory in which migration
+   * files are present
+   */
+  directory: string;
+  /**
+   * Elasticsearch Node.js client instance
+   */
+  client: Client;
+  /**
+   * Timeout to wait until the migration
+   * lock is released.
+   * Default: 60000
+   */
+  migrationLockTimeout?: number;
+}
+```
 
 ```ts
 import { migrateLatest, migrateNext } from 'elasticsearch-migrate';
