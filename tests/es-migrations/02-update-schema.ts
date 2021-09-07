@@ -1,3 +1,3 @@
 import type { Client } from '@elastic/elasticsearch';
 
-export function migrate(client: Client) {}
+export async function migrate(client: Client) {}

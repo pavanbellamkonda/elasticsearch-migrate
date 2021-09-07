@@ -19,7 +19,7 @@ export async function fetchSourceMigrations(directory: string): Promise<Migratio
     const splitFileName = fileName.split('.');
     splitFileName.pop();
     return {
-      id: index,
+      id: index + 1,
       fileName,
       path: path.join(absoluteDir, splitFileName.join('.'))
     };

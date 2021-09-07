@@ -19,6 +19,7 @@ export async function runSourceMigrations({
     try {
       await migration.migrate(client);
     } catch (err) {
+      await updateLock({ client, lockIndexName, isLocked: false });
       throw new MigrationRunFailedError(err.message, migration.fileName);
     }
     await client.index({
