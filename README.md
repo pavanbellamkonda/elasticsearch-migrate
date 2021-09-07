@@ -1,4 +1,9 @@
 # elasticsearch-migrate
+
+![Dependency Status](https://david-dm.org/pavanbellamkonda/elasticsearch-migrate.svg)
+![devDependency Status](https://david-dm.org/pavanbellamkonda/elasticsearch-migrate/dev-status.svg)
+![npm version](https://badge.fury.io/js/elasticsearch-migrate.svg)
+
 Tool to run migrations in Elasticsearch.
 
 ### Note: This package is still in active development, use it in production with caution.
