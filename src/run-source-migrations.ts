@@ -24,10 +24,10 @@ export async function runSourceMigrations({
     }
     await client.index({
       index: indexName,
-      id: String(migration.id + 1),
+      id: String(migration.id),
       body: {
         name: migration.fileName,
-        id: migration.id + 1,
+        id: migration.id,
         time: new Date().toISOString()
       }
     });
