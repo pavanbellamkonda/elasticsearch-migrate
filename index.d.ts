@@ -29,13 +29,4 @@ export interface MigrationConfig {
   migrationLockTimeout?: number;
 }
 
-export interface MigrationContext extends MigrationConfig {
-  /**
-   * The last migrated record
-   */
-  lastMigrated?: MigrationRecord | null;
-
-}
-
 export declare function migrateLatest(config: MigrationConfig): Promise<void>;
-export declare function migrateNext(config: MigrationConfig): Promise<boolean>;

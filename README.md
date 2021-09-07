@@ -1,6 +1,8 @@
 # elasticsearch-migrate
 Tool to run migrations in Elasticsearch.
 
+### Note: This package is still in active development, use it in production with caution.
+
 ## Usage
 
 About MigrationConfig
@@ -31,29 +33,22 @@ interface MigrationConfig {
 ```
 
 ```ts
-import { migrateLatest, migrateNext } from 'elasticsearch-migrate';
+import { migrateLatest } from 'elasticsearch-migrate';
 
 // Run all migrations
 
 await migrateLatest({
   indexName: 'myserver_migrations',
   client,
-  directory: '/src/db/es-migrations'
+  directory: __dirname + '/es-migrations'
 });
 
-// Run next migration
-
-await migrateNext({
-  indexName: 'myserver_migrations',
-  client,
-  directory: '/src/db/es-migrations'
-});
 ```
 
 Example Migration file
 
 ```ts
-export function migrate(client) {
+export async function migrate(client) {
   await client.indices.create({
     index: 'myindex',
     body: {
