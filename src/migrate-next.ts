@@ -1,5 +1,5 @@
 import type { MigrationRecord } from './models';
-import type { MigrationContext } from '../index';
+import type { MigrationConfig } from '../index';
 
 import { getAllRecordsInIndex } from './utils';
 import { fetchSourceMigrations } from './fetch-source-migrations';
@@ -12,7 +12,7 @@ export async function migrateNext({
   directory,
   client,
   migrationLockTimeout = 60000
-}: MigrationContext): Promise<boolean> {
+}: MigrationConfig): Promise<boolean> {
   const { migrationIndexCreated, migrationLockIndexCreated, lockIndexName } = await init({
     client,
     indexName,
