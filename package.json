@@ -1,6 +1,6 @@
 {
   "name": "elasticsearch-migrate",
-  "version": "0.0.8-alpha",
+  "version": "0.0.9-alpha",
   "description": "Tool to run migrations to create/modify Elasticsearch index mapping.",
   "main": "lib/index.js",
   "scripts": {
