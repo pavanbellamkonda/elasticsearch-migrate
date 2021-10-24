@@ -1,17 +1,19 @@
 import type { Client } from '@elastic/elasticsearch';
 
-interface MigrationRecord {
-  name: string;
-  id: number;
-  time: string;
-}
-
 export interface MigrationConfig {
   /**
    * Name of the index in which the migrations
    * have to be stored
    */
   indexName: string;
+  /**
+   * (!!OPTIONAL)
+   * Name of the index in which the migration lock
+   * has to be stored.
+   * If not provided, will be created as 
+   * indexName + '_lock'
+   */
+  lockIndexName?: string;
   /**
    * Relative path to the directory in which migration
    * files are present
@@ -27,6 +29,27 @@ export interface MigrationConfig {
    * Default: 60000
    */
   migrationLockTimeout?: number;
+  /**
+   * Flag to disable validation if already executed migrations
+   * are present in the source directory or not
+   * Default: false
+   */
+  disableMigrationsValidation?: boolean;
 }
 
 export declare function migrateLatest(config: MigrationConfig): Promise<void>;
+export declare function forceReleaseMigrationLock(config: MigrationConfig): Promise<void>;
+
+export declare class Migration {
+  constructor(config: MigrationConfig) {}
+
+  lastest = async () => {}
+
+  forceReleaseMigrationLock = async () => {}
+}
+
+export interface MigrateFnInput {
+  client: Client;
+}
+
+export type MigrateFn = (_: MigrateFnInput) => Promise<any>;

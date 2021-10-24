@@ -1,6 +1,6 @@
-import type { Client } from '@elastic/elasticsearch';
+import { MigrateFnInput } from '../../src/models';
 
-async function migrate(client: Client) {
+async function migrate({client}: MigrateFnInput) {
   await client.indices.create({
     index: 'my_index',
     // body: {

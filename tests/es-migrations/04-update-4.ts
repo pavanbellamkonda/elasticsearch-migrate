@@ -1,5 +1,5 @@
-import type { Client } from '@elastic/elasticsearch';
+import { MigrateFnInput } from '../../src/models';
 
-async function migrate(client: Client) {}
+async function migrate({client}: MigrateFnInput) {}
 
 export default migrate;

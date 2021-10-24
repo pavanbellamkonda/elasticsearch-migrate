@@ -1,5 +1,5 @@
 import { Client } from '@elastic/elasticsearch';
 
 export const client = new Client({
-  node: 'http://localhost:9200'
+  node: `http://${process.env.ES_HOST || 'localhost'}:9200`
 });

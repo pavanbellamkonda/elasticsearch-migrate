@@ -3,11 +3,11 @@ export const migrationIndexMapping = {
     name: {
       type: 'keyword'
     },
-    id: {
-      type: 'integer'
-    },
     time: {
       type: 'date'
+    },
+    index: {
+      type: 'integer'
     }
   }
 };

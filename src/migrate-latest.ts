@@ -1,31 +1,38 @@
-import type { MigrationRecord } from './models';
-import type { MigrationConfig } from '../index';
+import type { MigrationContext, ExecutedMigration, MigrationConfig } from './models';
 
-import { getAllRecordsInIndex } from './utils';
-import { fetchSourceMigrations } from './fetch-source-migrations';
-import { getPendingMigrations } from './get-pending-migrations';
-import { runSourceMigrations } from './run-source-migrations';
+import { getAllExecutedMigrations, getLastExecutedMigration } from './queries';
+import { fetchSourceMigrations, getPendingSourceMigrations, runMigrations, validateExecutedMigrationsExist } from './source-migrations';
 import { init } from './init';
 
-export async function migrateLatest({ 
-  indexName,
-  directory,
-  client,
-  migrationLockTimeout = 60000
-}: MigrationConfig): Promise<void> {
-  const { migrationIndexCreated, migrationLockIndexCreated, lockIndexName } = await init({
-    client,
-    indexName,
-    migrationLockTimeout
-  });
-  let existingMigrations: MigrationRecord[] = [];
-  if (!migrationIndexCreated) {
-    existingMigrations = await getAllRecordsInIndex<MigrationRecord>({
-      indexName,
-      client
-    });
-  }
+export async function migrateLatest(config: MigrationConfig): Promise<void> {
+  const context = await init(config);
+  await migrateLatestInternal(context);
+}
+
+export async function migrateLatestInternal(context: MigrationContext) {
+  const { indexName, client, directory } = context;
   const sourceMigrations = await fetchSourceMigrations(directory);
-  const migrations = getPendingMigrations(sourceMigrations, existingMigrations);
-  await runSourceMigrations({ migrations, client, indexName });
+  if (!context.disableMigrationsValidation) {
+    let executedMigrations: ExecutedMigration[] = [];
+    if (!context.migrationIndexCreated) {
+      executedMigrations = await getAllExecutedMigrations({
+        indexName,
+        client
+      });
+    }
+    if (executedMigrations.length > 0) {
+      validateExecutedMigrationsExist(executedMigrations, sourceMigrations);
+      context.lastExecutedMigration = executedMigrations[executedMigrations.length - 1];
+    } else {
+      context.lastExecutedMigration = null;
+    }
+  } else {
+    context.lastExecutedMigration = await getLastExecutedMigration({ indexName, client });
+  }
+  if (context.lastExecutedMigration) {
+    context.pendingMigrations = getPendingSourceMigrations(sourceMigrations, context.lastExecutedMigration);
+  } else {
+    context.pendingMigrations = sourceMigrations;
+  }
+  await runMigrations(context);
 }

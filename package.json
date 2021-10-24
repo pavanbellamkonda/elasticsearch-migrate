@@ -1,6 +1,6 @@
 {
   "name": "elasticsearch-migrate",
-  "version": "0.0.9-alpha",
+  "version": "0.0.10-alpha",
   "description": "Tool to run migrations to create/modify Elasticsearch index mapping.",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "coverage": "nyc npm run test",
     "coveradge": "nyc --reporter coveradge npm run test",
     "prod-build": "rm -rf lib && tsc --project tsconfig.production.json",
-    "test": "jasmine-ts --config=jasmine.json",
+    "test": "ts-node tests/test.ts",
     "watch-test": "nodemon"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "@types/jasmine": "^3.8.1",
     "@types/node": "^12.20.17",
     "coveradge": "^0.7.0",
+    "is-reachable": "^5.1.0",
     "jasmine": "^3.8.0",
     "jasmine-reporters": "^2.4.0",
     "jasmine-spec-reporter": "^7.0.0",
