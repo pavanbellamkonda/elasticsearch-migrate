@@ -1,9 +1,10 @@
 import type { MigrationConfig, MigrationContext } from './models';
+import * as types from '../index';
 import { forceReleaseMigrationLock } from './migration-lock'
 import { init } from './init';
-import { migrateLatestInternal } from './migrate-latest';
+import { migrateLatestInternal, migrateNextInternal } from './migrate';
 
-export class Migration {
+export class Migration implements types.Migration {
   private context!: MigrationContext;
   private config: MigrationConfig;
 
@@ -12,18 +13,17 @@ export class Migration {
   }
 
   async latest() {
-    if (!this.context?.initialized) {
-      await this.init();
-    }
-    await migrateLatestInternal(this.context);
+    this.context = await init(this.config);
+    this.context = await migrateLatestInternal(this.context);
+  }
+
+  async next() {
+    this.context = await init(this.config);
+    this.context = await migrateNextInternal(this.context);
   }
 
   async forceReleaseMigrationLock() {
     await forceReleaseMigrationLock(this.config);
-  }
-
-  private async init() {
-    this.context = await init(this.config);
   }
 
 }

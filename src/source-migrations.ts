@@ -74,7 +74,7 @@ export function importMigrateFunction(absoluteFilePath: string): MigrateFn {
   throw new MigrateFunctionImportFailedError(absoluteFilePath);
 }
 
-export async function runMigrations(context: MigrationContext): Promise<MigrationContext> {
+export async function executeMigrations(context: MigrationContext, { onlyFirst } = { onlyFirst: false }): Promise<MigrationContext> {
   const {
     pendingMigrations,
     client,
@@ -105,6 +105,9 @@ export async function runMigrations(context: MigrationContext): Promise<Migratio
         body: executedMigration
       });
       context.lastExecutedMigration = executedMigration;
+      if (onlyFirst) {
+        break;
+      }
     }
   } catch(err: any) {
     await cleanup();
@@ -113,7 +116,6 @@ export async function runMigrations(context: MigrationContext): Promise<Migratio
   await cleanup();
   return context;
 }
-
 
 export function isFunction(val: unknown): boolean {
   return typeof val === 'function';

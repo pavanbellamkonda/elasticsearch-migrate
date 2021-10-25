@@ -27,26 +27,4 @@ describe('Migration', () => {
     }
   });
 
-  describe('init()', () => {
-    beforeAll(async () => {
-      await client.indices.delete({
-        index: 'init_indices_class',
-        ignore_unavailable: true
-      })
-      await client.indices.delete({
-        index: 'init_indices_class_lock',
-        ignore_unavailable: true
-      })
-    });
-
-    it('initializes indices and updates context', async () => {
-      const indexName = 'init_indices_class';
-      const config =  { indexName, client } as MigrationConfig;
-      const migration = new Migration(config);
-      await migration['init']();
-      expect(migration['context'].migrationIndexCreated).toBeTrue();
-      expect(migration['context'].migrationLockIndexCreated).toBeTrue();
-      expect(migration['context'].initialized).toBeTrue();
-    });
-  })
 });

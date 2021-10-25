@@ -5,7 +5,7 @@ import {
   validateExecutedMigrationsExist,
   importMigrateFunction,
   isFunction,
-  runMigrations
+  executeMigrations
 } from '../src/source-migrations';
 import { client } from './client';
 
@@ -215,7 +215,7 @@ describe('isFunction()', () => {
   });
 });
 
-describe('runMigrations() - runs pending migrations', () => {
+describe('executeMigrations() - runs pending migrations', () => {
   it('locks migration and runs migrations - HAPPY PATH', async () => {
     const pendingMigrations = [
       {
@@ -242,7 +242,7 @@ describe('runMigrations() - runs pending migrations', () => {
     const indexName = 'run_migrations_happy';
     const lockIndexName = indexName + '_lock';
     let context = { indexName, pendingMigrations, lockIndexName, client } as MigrationContext;
-    context = await runMigrations(context);
+    context = await executeMigrations(context);
     expect(context.lastExecutedMigration?.position).toEqual(3);
     expect(context.lastExecutedMigration?.name).toEqual('04-update-4.ts');
     expect(context.pendingMigrations).toEqual([]);

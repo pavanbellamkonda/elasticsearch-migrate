@@ -1,7 +1,5 @@
 # elasticsearch-migrate
 
-![Dependency Status](https://david-dm.org/pavanbellamkonda/elasticsearch-migrate.svg)
-![devDependency Status](https://david-dm.org/pavanbellamkonda/elasticsearch-migrate/dev-status.svg)
 ![npm version](https://badge.fury.io/js/elasticsearch-migrate.svg)
 
 Package to help you run one time migrations into your Elasticsearch DB such as Creating an index, inserting master data etc.
