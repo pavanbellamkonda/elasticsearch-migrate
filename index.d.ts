@@ -37,40 +37,13 @@ export interface MigrationConfig {
   disableMigrationsValidation?: boolean;
 }
 
-export interface MigrationContext extends MigrationConfig {
-  lockIndexName: string;
-  initialized: boolean;
-  migrateInitialized: boolean;
-  migrationLockTimeout: number;
-  migrationIndexCreated: boolean;
-  migrationLockIndexCreated: boolean;
-  sourceMigrations: SourceMigration[];
-  pendingMigrations: SourceMigration[];
-  executedMigrations?: ExecutedMigration[];
-  lastExecutedMigration: ExecutedMigration | null;
-}
-
-interface ExecutedMigration {
-  name: string;
-  position: number;
-  time: string;
-}
-
-interface SourceMigration {
-  path: string;
-  position: number;
-  name: string;
-}
-
 export declare function migrateLatest(config: MigrationConfig): Promise<void>;
-export declare function migrateNext(config: MigrationConfig | MigrationContext): Promise<MigrationContext>;
 export declare function forceReleaseMigrationLock(config: MigrationConfig): Promise<void>;
 
 export declare class Migration {
   constructor(config: MigrationConfig) {}
 
   latest = async () => {}
-  next = async () => {}
   forceReleaseMigrationLock = async () => {}
 }
 
