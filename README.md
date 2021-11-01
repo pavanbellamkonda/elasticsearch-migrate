@@ -51,15 +51,28 @@ export const client = new Client({
 
 `db/bootstrap-db.js`
 ```js
-import { migrateLatest } from 'elasticsearch-migrate';
+import { migrateLatest, Migration } from 'elasticsearch-migrate';
 import { client } from './es-client';
 
 export async function bootstrapDb() {
-  await migrateLatest({
+  /** @type {import('elasticsearch-migrate').MigrationConfig} */
+  const migrationConfig = {
     indexName: 'documents_migrations',
     client,
     directory: __dirname + '/es-migrations'
-  });
+  };
+  await migrateLatest(migrationConfig);
+  /*
+   ██████╗ ██████╗ 
+  ██╔═══██╗██╔══██╗
+  ██║   ██║██████╔╝
+  ██║   ██║██╔══██╗
+  ╚██████╔╝██║  ██║
+  ╚═════╝ ╚═╝  ╚═╝
+   */
+
+  const migration = new Migration(migrationConfig);
+  await migration.latest();
 }
 ```
 Read more about the input given to `migrateLatest` below
@@ -72,7 +85,15 @@ interface MigrationConfig {
    */
   indexName: string;
   /**
-   * Path to the directory in which migration
+   * (!!OPTIONAL)
+   * Name of the index in which the migration lock
+   * has to be stored.
+   * If not provided, will be created as 
+   * indexName + '_lock'
+   */
+  lockIndexName?: string;
+  /**
+   * Relative path to the directory in which migration
    * files are present
    */
   directory: string;
@@ -86,13 +107,37 @@ interface MigrationConfig {
    * Default: 60000
    */
   migrationLockTimeout?: number;
+  /**
+   * Flag to disable validation if already executed migrations
+   * are present in the source directory or not
+   * Default: false
+   */
+  disableMigrationsValidation?: boolean;
 }
 ```
 `db/es-migrations/01-create-index.js`
 Example Migration file
-
+### Javascript
 ```js
-export async function migrate(client) {
+/**
+ * @param {import('elasticsearch-migrate').MigrateFnInput}
+ */
+export async function migrate({ client }) {
+  await client.indices.create({
+    index: 'new_index',
+    body: {
+      mappings: {
+        properties: {}
+      }
+    }
+  });
+}
+```
+### Typescript
+```ts
+import { MigrateFnInput } from 'elasticsearch-migrate';
+
+export async function migrate({ client }: MigrateFnInput) {
   await client.indices.create({
     index: 'new_index',
     body: {
@@ -115,5 +160,9 @@ MigrationLockTimedOutError | If the `migrationLockTimeout` value is exceeded. De
 MigrationFileMissingError | If a record with migration file name exists in migrations index, but not in the given migrations directory. Check if you have accidentally deleted a file in the directory |
 MigrationRunFailedError | If an error is thrown by a migrate function while running it. Use try/catch blocks to narrow down the issue.
 
+## Coming Soon!
+- migrateNext() and migration.latest()
+- Save checkpoints in your migrations
+- and any new ideas/suggestions!
 
 Inspired by knex-migrations (https://knexjs.org/#Migrations).

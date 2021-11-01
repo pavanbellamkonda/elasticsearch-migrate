@@ -9,7 +9,8 @@
     "coveradge": "nyc --reporter coveradge npm run test",
     "prod-build": "rm -rf lib && tsc --project tsconfig.production.json",
     "test": "ts-node tests/test.ts",
-    "watch-test": "nodemon"
+    "watch-test": "nodemon",
+    "bpsh": "npm run prod-build && npm publish"
   },
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@ import type { Client } from '@elastic/elasticsearch';
 export interface MigrationConfig {
   /**
    * Name of the index in which the migrations
-   * have to be stored
+   * have to be stored/read.
    */
   indexName: string;
   /**
