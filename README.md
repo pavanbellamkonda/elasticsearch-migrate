@@ -4,8 +4,6 @@
 
 Package to help you run one time migrations into your Elasticsearch DB such as Creating an index, inserting master data etc.
 
-### Note: This package is still in active development, use it in production with caution.
-
 ## What it does
 
 Two indices will be created in your Elasticsearch instance.
@@ -68,7 +66,7 @@ export async function bootstrapDb() {
   ██║   ██║██████╔╝
   ██║   ██║██╔══██╗
   ╚██████╔╝██║  ██║
-  ╚═════╝ ╚═╝  ╚═╝
+   ╚═════╝ ╚═╝  ╚═╝
    */
 
   const migration = new Migration(migrationConfig);
