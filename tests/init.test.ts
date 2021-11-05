@@ -9,11 +9,11 @@ describe('createIndexIfNotAvailable()', () => {
     await client.indices.delete({
       index: 'create_index_not_available',
       ignore_unavailable: true
-    })
+    });
     await client.indices.delete({
       index: 'create_index_available',
       ignore_unavailable: true
-    })
+    });
   });
 
   it('should create migration index if it does not already exist', async () => {

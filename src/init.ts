@@ -1,8 +1,7 @@
-import { MigrationContext, Client } from './models';
+import type { MigrationContext, Client, MigrationConfig } from './models';
 
 import { waitForMigrationLockRelease } from './migration-lock';
 import { migrationIndexMapping, migrationLockIndexMapping } from './migration-index-mappings.constants';
-import { MigrationConfig } from '..';
 
 export async function createIndexIfNotAvailable({
   client,
@@ -40,10 +39,12 @@ export async function init(config: MigrationConfig): Promise<MigrationContext> {
   if (!context.initialized) {
     const migrationLockTimeout = config.migrationLockTimeout || 60000;
     const lockIndexName = config.lockIndexName || (config.indexName + '_lock');
+    const disableMigrationsValidation = config.disableMigrationsValidation || false;
     context = {
       ...config,
       lockIndexName,
-      migrationLockTimeout
+      migrationLockTimeout,
+      disableMigrationsValidation
     } as MigrationContext;
     const { migrationIndexCreated, migrationLockIndexCreated } = await createMigrationIndices(context);
     if (!migrationLockIndexCreated) {

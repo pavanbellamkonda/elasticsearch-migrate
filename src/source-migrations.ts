@@ -44,17 +44,11 @@ export async function fetchSourceMigrations(directory: string): Promise<SourceMi
     });
   });
   fileNames.sort();
-  return fileNames.map((name, position) => {
-    const splitFileName = name.split('.');
-    if (splitFileName.length > 1) {
-      splitFileName.pop();
-    }
-    return {
-      position,
-      name,
-      path: path.join(absoluteDir, splitFileName.join('.'))
-    };
-  });
+  return fileNames.map((name, position) => ({
+    position,
+    name,
+    path: path.join(absoluteDir, name)
+  }));
 }
 
 export function importMigrateFunction(absoluteFilePath: string): MigrateFn {
@@ -78,9 +72,9 @@ export async function executeMigrations(context: MigrationContext, { onlyFirst }
   const {
     pendingMigrations,
     client,
-    indexName
+    indexName,
+    lockIndexName
   } = context;
-  const lockIndexName = context.lockIndexName || indexName + '_lock';
   await updateLock({ client, lockIndexName, isLocked: true });
   const cleanup = async () => {
     await updateLock({ client, lockIndexName, isLocked: false });

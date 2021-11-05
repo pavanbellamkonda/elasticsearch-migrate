@@ -17,22 +17,22 @@ describe('fetchSourceMigrations()', () => {
       {
         position: 0,
         name: '01-create-index.ts',
-        path: __dirname + '/es-migrations/01-create-index'
+        path: __dirname + '/es-migrations/01-create-index.ts'
       },
       {
         position: 1,
         name: '02-update-schema.ts',
-        path: __dirname + '/es-migrations/02-update-schema'
+        path: __dirname + '/es-migrations/02-update-schema.ts'
       },
       {
         position: 2,
         name: '03-update-again.ts',
-        path: __dirname + '/es-migrations/03-update-again'
+        path: __dirname + '/es-migrations/03-update-again.ts'
       },
       {
         position: 3,
         name: '04-update-4.ts',
-        path: __dirname + '/es-migrations/04-update-4'
+        path: __dirname + '/es-migrations/04-update-4.ts'
       }
     ])
   });
@@ -217,6 +217,10 @@ describe('isFunction()', () => {
 
 describe('executeMigrations() - runs pending migrations', () => {
   it('locks migration and runs migrations - HAPPY PATH', async () => {
+    await client.indices.delete({
+      index: String(process.env.indexName),
+      ignore_unavailable: true
+    });
     const pendingMigrations = [
       {
         position: 0,

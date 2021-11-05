@@ -38,3 +38,14 @@ describe('MigrationRunFailedError', () => {
     }
   });
 });
+
+describe('MigrationLockTimedOutError', () => {
+  it('throws error when migration lock times out', () => {
+    const timeOutMs = 10000;
+    try {
+      throw new MigrationLockTimedOutError(timeOutMs);
+    } catch(err:any) {
+      expect(err.message).toEqual('MigrationLockTimedOutError: Migration Lock is not released before timeout 10 seconds');
+    }
+  });
+});
